@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📱 SMART PHONE SHOP</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== Түстөр жана базалык стилдер ===== */
+:root{--blue:#2563eb;--blue2:#3b82f6;--pink:#ec4899;--dark:#0f172a;--gray:#64748b;--bg:#f1f5f9;--white:#fff}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',Arial,sans-serif;background:var(--bg);color:var(--dark)}
+section{padding:70px 5%}
+h2.title{text-align:center;font-size:2rem;margin-bottom:30px;font-weight:800}
+h2.title span{color:var(--blue)}
+
+/* ===== Баскычтар (анимация менен) ===== */
+.btn{border:none;cursor:pointer;font-family:inherit;font-weight:600;padding:12px 22px;border-radius:12px;font-size:.95rem;transition:.3s;display:inline-block;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--pink));color:#fff;box-shadow:0 6px 18px rgba(37,99,235,.35)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(236,72,153,.4)}
+.btn-outline{background:transparent;border:2px solid #fff;color:#fff}
+.btn-outline:hover{background:#fff;color:var(--dark);transform:translateY(-3px)}
+.btn-light{background:#e2e8f0;color:var(--dark)}
+.btn-light:hover{background:#cbd5e1;transform:translateY(-2px)}
+
+/* ===== Header / Navbar ===== */
+header{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.95);backdrop-filter:blur(10px);display:flex;align-items:center;justify-content:space-between;padding:14px 5%}
+.logo{color:#fff;font-weight:800;font-size:1.2rem;text-decoration:none}
+nav{display:flex;gap:26px}
+nav a{color:#cbd5e1;text-decoration:none;font-weight:500;transition:.3s}
+nav a:hover{color:#fff}
+.head-right{display:flex;align-items:center;gap:14px}
+.cart-btn{position:relative;background:var(--blue);color:#fff;border:none;border-radius:12px;padding:9px 14px;font-size:1.1rem;cursor:pointer;transition:.3s}
+.cart-btn:hover{transform:scale(1.08)}
+#cartCount{position:absolute;top:-8px;right:-8px;background:var(--pink);font-size:.7rem;font-weight:700;min-width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.burger{display:none;background:none;border:none;color:#fff;font-size:1.7rem;cursor:pointer}
+
+/* ===== Баннер ===== */
+.hero{background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 55%,#be185d 130%);color:#fff;display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;min-height:82vh}
+.hero h1{font-size:3rem;line-height:1.15;font-weight:800;margin-bottom:16px}
+.hero h1 span{background:linear-gradient(90deg,#60a5fa,#f472b6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:#cbd5e1;margin-bottom:28px;max-width:480px}
+.hero .btns{display:flex;gap:14px;flex-wrap:wrap}
+.hero-img{font-size:12rem;text-align:center;animation:float 3.5s ease-in-out infinite;filter:drop-shadow(0 25px 40px rgba(0,0,0,.5))}
+@keyframes float{50%{transform:translateY(-18px) rotate(4deg)}}
+
+/* ===== Куралдар панели: издөө, фильтр ===== */
+.tools{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:18px}
+.tools input,.tools select{padding:13px 16px;border-radius:12px;border:2px solid #e2e8f0;font-family:inherit;font-size:.95rem;outline:none;transition:.3s;background:#fff}
+.tools input{flex:1;min-width:240px;max-width:420px}
+.tools input:focus,.tools select:focus{border-color:var(--blue)}
+.brands{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:34px}
+.brands button{padding:10px 22px;border-radius:30px;border:2px solid var(--blue);background:#fff;color:var(--blue);font-family:inherit;font-weight:600;cursor:pointer;transition:.3s}
+.brands button.active,.brands button:hover{background:var(--blue);color:#fff;transform:translateY(-2px)}
+
+/* ===== Карточкалар ===== */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 8px 24px rgba(15,23,42,.08);transition:.35s;display:flex;flex-direction:column}
+.card:hover{transform:translateY(-8px);box-shadow:0 18px 38px rgba(37,99,235,.22)}
+.card .img{height:200px;background:linear-gradient(135deg,#eff6ff,#fce7f3);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card .img img{height:100%;width:100%;object-fit:cover;transition:.4s}
+.card:hover .img img{transform:scale(1.08)}
+.card .body{padding:18px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{font-size:1.1rem}
+.card .desc{font-size:.82rem;color:var(--gray)}
+.specs{font-size:.8rem;color:#334155;line-height:1.7;margin:6px 0}
+.price{font-size:1.35rem;font-weight:800;color:var(--blue);margin-top:auto}
+.card .actions{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.card .actions .btn{padding:10px;font-size:.88rem;width:100%}
+.empty{grid-column:1/-1;text-align:center;color:var(--gray);padding:40px}
+
+/* ===== Биз жөнүндө ===== */
+.about{background:#fff;text-align:center}
+.about p{max-width:700px;margin:0 auto 30px;color:var(--gray)}
+.stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.stats div{font-size:2rem;font-weight:800;color:var(--blue)}
+.stats small{display:block;font-size:.85rem;color:var(--gray);font-weight:500}
+
+/* ===== Байланыш ===== */
+.contact-wrap{display:grid;grid-template-columns:1fr 1fr;gap:30px;max-width:1000px;margin:auto}
+.box{background:#fff;padding:28px;border-radius:20px;box-shadow:0 8px 24px rgba(15,23,42,.08)}
+.box h3{margin-bottom:14px}
+.box .tel{font-size:1.4rem;font-weight:800;color:var(--blue);margin-bottom:16px}
+.social{display:flex;gap:10px;flex-wrap:wrap}
+.wa{background:#22c55e;color:#fff}.tg{background:#0ea5e9;color:#fff}
+.wa:hover,.tg:hover{transform:translateY(-3px)}
+form input,form textarea{width:100%;padding:12px 14px;margin-bottom:12px;border:2px solid #e2e8f0;border-radius:12px;font-family:inherit;outline:none;transition:.3s}
+form input:focus,form textarea:focus{border-color:var(--blue)}
+
+footer{background:var(--dark);color:#94a3b8;text-align:center;padding:24px}
+
+/* ===== Себет (оң жактан чыгат) ===== */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:90}
+.overlay.show{display:block}
+.drawer{position:fixed;top:0;right:-420px;width:400px;max-width:100%;height:100%;background:#fff;z-index:100;transition:.4s;display:flex;flex-direction:column}
+.drawer.open{right:0}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid #e2e8f0}
+.close{background:none;border:none;font-size:1.5rem;cursor:pointer}
+#cartItems{flex:1;overflow-y:auto;padding:14px 20px}
+.ci{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #f1f5f9;font-size:.9rem}
+.ci b{display:block}.ci small{color:var(--gray)}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:26px;height:26px;border-radius:8px;border:none;background:#e2e8f0;cursor:pointer;font-weight:700}
+.del{background:#fee2e2;border:none;border-radius:8px;padding:6px 9px;cursor:pointer}
+.drawer-foot{padding:18px 20px;border-top:1px solid #e2e8f0}
+.total{display:flex;justify-content:space-between;font-weight:800;font-size:1.15rem;margin-bottom:12px}
+.drawer-foot .btn{width:100%}
+
+/* ===== Modal ===== */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:110;padding:16px}
+.modal.show{display:flex}
+.modal-box{background:#fff;border-radius:22px;max-width:760px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:1fr 1fr;position:relative;animation:pop .3s}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+.modal-box .m-img{background:linear-gradient(135deg,#eff6ff,#fce7f3);display:flex;align-items:center;justify-content:center}
+.modal-box .m-img img{width:100%;height:100%;object-fit:cover;min-height:260px}
+.modal-box .m-info{padding:28px}
+.modal-box .close{position:absolute;top:10px;right:14px;background:#fff;border-radius:50%;width:36px;height:36px}
+.m-info ul{list-style:none;margin:14px 0;line-height:2;font-size:.92rem}
+
+/* ===== Билдирүү (Toast) ===== */
+#toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,100px);background:var(--dark);color:#fff;padding:14px 24px;border-radius:14px;z-index:200;transition:.4s;max-width:90%;text-align:center}
+#toast.show{transform:translate(-50%,0)}
+
+/* ===== Responsive: планшет жана телефон ===== */
+@media(max-width:1100px){.grid{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:820px){
+  .grid{grid-template-columns:repeat(2,1fr)}
+  .hero{grid-template-columns:1fr;text-align:center;min-height:auto;padding-top:50px}
+  .hero p{margin-inline:auto}.hero .btns{justify-content:center}
+  .hero h1{font-size:2.2rem}.hero-img{font-size:7rem;order:-1}
+  .contact-wrap,.modal-box{grid-template-columns:1fr}
+  .burger{display:block}
+  nav{position:absolute;top:100%;left:0;right:0;background:var(--dark);flex-direction:column;gap:0;max-height:0;overflow:hidden;transition:.4s}
+  nav.open{max-height:300px}
+  nav a{padding:14px 5%;border-top:1px solid #1e293b}
+}
+@media(max-width:560px){.grid{grid-template-columns:1fr}section{padding:50px 5%}}
+</style>
+</head>
+<body>
+
+<!-- ===== Header ===== -->
+<header>
+  <a href="#home" class="logo">📱 SMART PHONE SHOP</a>
+  <nav id="nav">
+    <a href="#home">Башкы бет</a>
+    <a href="#phones">Телефондор</a>
+    <a href="#about">Биз жөнүндө</a>
+    <a href="#contact">Байланыш</a>
+  </nav>
+  <div class="head-right">
+    <button class="cart-btn" onclick="toggleCart(true)">🛒<span id="cartCount">0</span></button>
+    <button class="burger" onclick="document.getElementById('nav').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<!-- ===== Баннер ===== -->
+<section class="hero" id="home">
+  <div>
+    <h1>Эң мыкты <span>смартфондор</span> бир жерде!</h1>
+    <p>iPhone, Samsung жана Redmi — сапаттуу, кепилдик менен жана жакшы баада. Өзүңүзгө ылайыктуу телефонду азыр тандаңыз.</p>
+    <div class="btns">
+      <a href="#phones" class="btn btn-primary">📱 Телефон тандоо</a>
+      <a href="#phones" class="btn btn-outline">🛒 Сатып алуу</a>
+    </div>
+  </div>
+  <div class="hero-img">📱</div>
+</section>
+
+<!-- ===== Каталог ===== -->
+<section id="phones">
+  <h2 class="title">📱 Телефондор <span>каталогу</span></h2>
+  <div class="tools">
+    <input type="text" id="search" placeholder="🔍 Телефон издөө...">
+    <select id="sort">
+      <option value="">Баасы боюнча сорттоо</option>
+      <option value="asc">Арзанынан кымбатына</option>
+      <option value="desc">Кымбатынан арзанына</option>
+    </select>
+  </div>
+  <div class="brands" id="brands">
+    <button class="active" data-b="Баары">Баары</button>
+    <button data-b="iPhone">iPhone</button>
+    <button data-b="Samsung">Samsung</button>
+    <button data-b="Redmi">Redmi</button>
+  </div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<!-- ===== Биз жөнүндө ===== -->
+<section class="about" id="about">
+  <h2 class="title">Биз <span>жөнүндө</span></h2>
+  <p>SMART PHONE SHOP — заманбап смартфондорду ишенимдүү баада сатуучу дүкөн. Бардык телефондор оригинал жана кепилдик менен берилет.</p>
+  <div class="stats">
+    <div>5000+<small>Бактылуу кардар</small></div>
+    <div>9<small>Популярдуу модель</small></div>
+    <div>12 ай<small>Кепилдик</small></div>
+  </div>
+</section>
+
+<!-- ===== Байланыш ===== -->
+<section id="contact">
+  <h2 class="title">📞 Сатуучу менен <span>байланышуу</span></h2>
+  <div class="contact-wrap">
+    <div class="box">
+      <h3>Бизге чалыңыз</h3>
+      <div class="tel">+996 700 123 456</div>
+      <div class="social">
+        <a class="btn wa" href="https://wa.me/996700123456" target="_blank">WhatsApp</a>
+        <a class="btn tg" href="https://t.me/username" target="_blank">Telegram</a>
+      </div>
+    </div>
+    <div class="box">
+      <h3>Кабар калтыруу</h3>
+      <form id="contactForm">
+        <input type="text" id="cName" placeholder="Аты" required>
+        <input type="tel" id="cPhone" placeholder="Телефон номери" required>
+        <textarea id="cMsg" rows="3" placeholder="Кабар" required></textarea>
+        <button class="btn btn-primary" type="submit" style="width:100%">Жөнөтүү</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>© 2026 📱 SMART PHONE SHOP. Бардык укуктар корголгон.</footer>
+
+<!-- ===== Себет ===== -->
+<div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head"><h3>🛒 Себет</h3><button class="close" onclick="toggleCart(false)">✕</button></div>
+  <div id="cartItems"></div>
+  <div class="drawer-foot">
+    <div class="total"><span>Жалпы сумма:</span><span id="total">$0</span></div>
+    <button class="btn btn-primary" onclick="order()">✅ Заказ берүү</button>
+  </div>
+</aside>
+
+<!-- ===== Толук маалымат modal ===== -->
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box" id="modalBox"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ===== Телефондордун маалыматы ===== */
+const IMG = {
+  iPhone:"https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&q=80",
+  Samsung:"https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=500&q=80",
+  Redmi:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=500&q=80"
+};
+const phones = [
+  {id:1,brand:"iPhone",name:"iPhone 15",price:799,screen:'6.1" OLED',mem:"128 GB / 6 GB",cam:"48 MP",bat:"3349 mAh",info:"Dynamic Island жана USB-C менен."},
+  {id:2,brand:"iPhone",name:"iPhone 16",price:899,screen:'6.1" OLED',mem:"128 GB / 8 GB",cam:"48 MP",bat:"3561 mAh",info:"Жаңы A18 чипи жана Camera Control баскычы."},
+  {id:3,brand:"iPhone",name:"iPhone 16 Pro",price:1199,screen:'6.3" LTPO OLED',mem:"256 GB / 8 GB",cam:"48 MP Pro",bat:"3582 mAh",info:"Титан корпус, 120Hz экран жана күчтүү A18 Pro."},
+  {id:4,brand:"Samsung",name:"Samsung Galaxy S24",price:749,screen:'6.2" AMOLED',mem:"256 GB / 8 GB",cam:"50 MP",bat:"4000 mAh",info:"Galaxy AI мүмкүнчүлүктөрү менен флагман."},
+  {id:5,brand:"Samsung",name:"Samsung Galaxy S25",price:849,screen:'6.2" AMOLED 120Hz',mem:"256 GB / 12 GB",cam:"50 MP",bat:"4000 mAh",info:"Snapdragon 8 Elite жана өркүндөтүлгөн AI."},
+  {id:6,brand:"Samsung",name:"Samsung Galaxy A55",price:429,screen:'6.6" Super AMOLED',mem:"128 GB / 8 GB",cam:"50 MP",bat:"5000 mAh",info:"Орто класстагы мыкты тандоо, металл рамка."},
+  {id:7,brand:"Redmi",name:"Redmi Note 13",price:219,screen:'6.67" AMOLED',mem:"128 GB / 6 GB",cam:"108 MP",bat:"5000 mAh",info:"Арзан баада 108 MP камера."},
+  {id:8,brand:"Redmi",name:"Redmi Note 14",price:249,screen:'6.67" AMOLED 120Hz',mem:"128 GB / 8 GB",cam:"108 MP",bat:"5110 mAh",info:"Жаңы дизайн жана ылдам заряддоо."},
+  {id:9,brand:"Redmi",name:"Redmi Note 14 Pro",price:329,screen:'6.67" AMOLED 120Hz',mem:"256 GB / 8 GB",cam:"200 MP",bat:"5500 mAh",info:"200 MP камера жана 45W ылдам заряддоо."}
+];
+
+let brand = "Баары", cart = [];
+
+/* ===== Сүрөт жүктөлбөсө — кооз placeholder ===== */
+function ph(name){
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='#dbeafe'/><stop offset='1' stop-color='#fbcfe8'/></linearGradient></defs><rect width='400' height='400' fill='url(#g)'/><text x='200' y='210' font-size='110' text-anchor='middle'>📱</text><text x='200' y='300' font-size='24' font-family='Arial' font-weight='bold' fill='#1e293b' text-anchor='middle'>${name}</text></svg>`;
+  return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+}
+function imgTag(p){
+  return `<img src="${IMG[p.brand]}" alt="${p.name}" loading="lazy" onerror="this.onerror=null;this.src='${ph(p.name)}'">`;
+}
+
+/* ===== Каталогду көрсөтүү (издөө + фильтр + сорттоо) ===== */
+function render(){
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const sort = document.getElementById("sort").value;
+  let list = phones.filter(p =>
+    (brand === "Баары" || p.brand === brand) &&
+    (p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q))
+  );
+  if(sort === "asc") list.sort((a,b)=>a.price-b.price);
+  if(sort === "desc") list.sort((a,b)=>b.price-a.price);
+
+  document.getElementById("grid").innerHTML = list.length ? list.map(p => `
+    <div class="card">
+      <div class="img">${imgTag(p)}</div>
+      <div class="body">
+        <h3>${p.name}</h3>
+        <div class="desc">${p.info}</div>
+        <div class="specs">📐 Экран: ${p.screen}<br>💾 Эс тутум: ${p.mem}<br>📷 Камера: ${p.cam}<br>🔋 Батарея: ${p.bat}</div>
+        <div class="price">💰 $${p.price}</div>
+        <div class="actions">
+          <button class="btn btn-primary" onclick="addToCart(${p.id})">🛒 Себетке кошуу</button>
+          <button class="btn btn-light" onclick="openModal(${p.id})">Толук маалымат</button>
+        </div>
+      </div>
+    </div>`).join("") : `<div class="empty">😕 Телефон табылган жок</div>`;
+}
+
+/* Издөө жана сорттоо окуялары */
+document.getElementById("search").addEventListener("input", render);
+document.getElementById("sort").addEventListener("change", render);
+/* Бренд фильтри */
+document.getElementById("brands").addEventListener("click", e=>{
+  if(e.target.tagName !== "BUTTON") return;
+  brand = e.target.dataset.b;
+  document.querySelectorAll("#brands button").forEach(b=>b.classList.remove("active"));
+  e.target.classList.add("active");
+  render();
+});
+
+/* ===== Себет функциялары ===== */
+function addToCart(id){
+  const item = cart.find(c=>c.id===id);
+  if(item) item.qty++; else cart.push({id, qty:1});
+  updateCart();
+  toast("✅ Себетке кошулду!");
+}
+function changeQty(id,d){
+  const item = cart.find(c=>c.id===id);
+  item.qty += d;
+  if(item.qty <= 0) cart = cart.filter(c=>c.id!==id);
+  updateCart();
+}
+function removeItem(id){ cart = cart.filter(c=>c.id!==id); updateCart(); }
+
+function updateCart(){
+  const box = document.getElementById("cartItems");
+  let total = 0, count = 0;
+  box.innerHTML = cart.length ? cart.map(c=>{
+    const p = phones.find(x=>x.id===c.id);
+    total += p.price*c.qty; count += c.qty;
+    return `<div class="ci">
+      <div><b>${p.name}</b><small>$${p.price}</small></div>
+      <div class="qty"><button onclick="changeQty(${p.id},-1)">−</button><span>${c.qty}</span><button onclick="changeQty(${p.id},1)">+</button></div>
+      <div><b>$${p.price*c.qty}</b></div>
+      <button class="del" onclick="removeItem(${p.id})">🗑</button>
+    </div>`;
+  }).join("") : `<p style="text-align:center;color:#64748b;margin-top:40px">Себет бош 🛒</p>`;
+  document.getElementById("total").textContent = "$" + total;
+  document.getElementById("cartCount").textContent = count;
+}
+function toggleCart(open){
+  document.getElementById("drawer").classList.toggle("open", open);
+  document.getElementById("overlay").classList.toggle("show", open);
+}
+
+/* Заказ берүү */
+function order(){
+  if(!cart.length){ toast("⚠️ Себет бош!"); return; }
+  const total = cart.reduce((s,c)=>s+phones.find(p=>p.id===c.id).price*c.qty,0);
+  alert("🎉 Заказыңыз кабыл алынды!\nЖалпы сумма: $" + total + "\nСатуучу жакында сиз менен байланышат.");
+  cart = []; updateCart(); toggleCart(false);
+}
+
+/* ===== Modal терезе ===== */
+function openModal(id){
+  const p = phones.find(x=>x.id===id);
+  document.getElementById("modalBox").innerHTML = `
+    <button class="close" onclick="closeModal()">✕</button>
+    <div class="m-img">${imgTag(p)}</div>
+    <div class="m-info">
+      <h2>${p.name}</h2>
+      <p style="color:#64748b;margin-top:6px">${p.info}</p>
+      <ul>
+        <li>📐 Экран: <b>${p.screen}</b></li>
+        <li>💾 Эс тутум: <b>${p.mem}</b></li>
+        <li>📷 Камера: <b>${p.cam}</b></li>
+        <li>🔋 Батарея: <b>${p.bat}</b></li>
+        <li>🛡 Кепилдик: <b>12 ай</b></li>
+      </ul>
+      <div class="price" style="margin-bottom:14px">💰 $${p.price}</div>
+      <button class="btn btn-primary" style="width:100%" onclick="addToCart(${p.id});closeModal()">🛒 Себетке кошуу</button>
+    </div>`;
+  document.getElementById("modal").classList.add("show");
+}
+function closeModal(){ document.getElementById("modal").classList.remove("show"); }
+
+/* ===== Байланыш формасы ===== */
+document.getElementById("contactForm").addEventListener("submit", e=>{
+  e.preventDefault();
+  const name = document.getElementById("cName").value;
+  toast("📨 Рахмат, " + name + "! Кабарыңыз жөнөтүлдү.");
+  e.target.reset();
+});
+
+/* ===== Кичинекей билдирүү (toast) ===== */
+function toast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.classList.add("show");
+  clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove("show"), 2500);
+}
+
+/* Меню шилтемесин басканда телефондо жабылсын */
+document.querySelectorAll("nav a").forEach(a=>a.addEventListener("click",()=>document.getElementById("nav").classList.remove("open")));
+
+/* Баштапкы жүктөө */
+render(); updateCart();
+</script>
+</body>
+</html>
